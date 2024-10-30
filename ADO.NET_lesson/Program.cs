@@ -8,33 +8,55 @@ public class Program
         // Строка подключения к базе данных MySQL
         string connectionString = "Server=localhost;Database=test;Uid=root;Pwd=;";
 
-        // Использование блока using для автоматического закрытия соединения
+        // Создание подключения с автоматическим закрытием соединения
         using (var connection = new MySqlConnection(connectionString))
         {
             // Открытие соединения
             connection.Open();
-            Console.WriteLine("Подключение открыто");
 
-            // Вывод информации о подключении
-            PrintProperties(connection);
+            // Составление SQL-выражения на создание таблицы
+            string sqlQuery = @"CREATE TABLE IF NOT EXISTS users (
+                                  id INT AUTO_INCREMENT PRIMARY KEY,
+                                  first_name VARCHAR(50) NOT NULL,
+                                  last_name VARCHAR(50) NOT NULL,
+                                  email VARCHAR(100) UNIQUE NOT NULL,
+                                  age INT,
+                                  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                               );";
+
+            // Создание объекта для инкапсуляции выполняемого SQL-выражения 
+            MySqlCommand command = new MySqlCommand(sqlQuery, connection);
+
+            // Выполнение команды на создание таблицы
+            var execute = command.ExecuteNonQuery();
+
+            Console.WriteLine($"Создана таблица users. Количество измененных записей: {execute}");
+
+            // Переопределяем SQL-выражение, вставляем данные в таблицу
+            command.CommandText = @"INSERT INTO users (first_name, last_name, email, age) VALUES
+                                    ('John', 'Doe', 'john.doe@example.com', 30),
+                                    ('Jane', 'Smith', 'jane.smith@example.com', 25),
+                                    ('Alice', 'Johnson', 'alice.johnson@example.com', 28),
+                                    ('Bob', 'Brown', 'bob.brown@example.com', 35),
+                                    ('Charlie', 'Davis', 'charlie.davis@example.com', 22);
+                                   ";
+
+            // Выполнение команды на вставку данных
+            execute = command.ExecuteNonQuery();
+
+            Console.WriteLine($"Количество вставленных записей в таблицу users: {execute}");
         }
-        Console.WriteLine("Подключение закрыто");
     }
 
     // Метод для вывода всех свойств объекта
     private static void PrintProperties(object obj)
     {
-        // Получение типа объекта
         Type type = obj.GetType();
-        // Получение всех свойств объекта
         PropertyInfo[] properties = type.GetProperties();
 
-        // Перебор всех свойств
         foreach (var property in properties)
         {
-            // Получение значения свойства
             object value = property.GetValue(obj, null);
-            // Вывод имени и значения свойства
             Console.WriteLine($"{property.Name}: {value}");
         }
     }
