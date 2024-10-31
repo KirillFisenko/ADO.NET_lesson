@@ -37,28 +37,29 @@ public class Program
                                );";
 
             // Создание объекта для инкапсуляции выполняемого SQL-выражения 
-            MySqlCommand command = new MySqlCommand(sqlQuery, connection);
+            using (MySqlCommand command = new MySqlCommand(sqlQuery, connection))
+            {
+                // Выполнение команды на создание таблицы
+                var execute = command.ExecuteNonQuery();
 
-            // Выполнение команды на создание таблицы
-            var execute = command.ExecuteNonQuery();
+                Console.WriteLine($"Создана таблица users. Количество измененных записей: {execute}");
 
-            Console.WriteLine($"Создана таблица users. Количество измененных записей: {execute}");
+                // Добавляем параметры запроса
+                command.Parameters.AddWithValue("@firstName", firstName);
+                command.Parameters.AddWithValue("@lastName", lastName);
+                command.Parameters.AddWithValue("@email", email);
+                command.Parameters.AddWithValue("@age", age);
 
-            // Добавляем параметры запроса
-            command.Parameters.AddWithValue("@firstName", firstName);
-            command.Parameters.AddWithValue("@lastName", lastName);
-            command.Parameters.AddWithValue("@email", email);
-            command.Parameters.AddWithValue("@age", age);
-
-            // Переопределяем SQL-выражение, вставляем данные в таблицу
-            command.CommandText = $@"INSERT INTO users (first_name, last_name, email, age) VALUES
+                // Переопределяем SQL-выражение, вставляем данные в таблицу
+                command.CommandText = $@"INSERT INTO users (first_name, last_name, email, age) VALUES
                                     (@firstName, @lastName, @email, @age);
                                    ";
 
-            // Выполнение команды на вставку данных
-            execute = command.ExecuteNonQuery();
+                // Выполнение команды на вставку данных
+                execute = command.ExecuteNonQuery();
 
-            Console.WriteLine($"Количество вставленных записей в таблицу users: {execute}");
+                Console.WriteLine($"Количество вставленных записей в таблицу users: {execute}");
+            };
         }
     }
 
