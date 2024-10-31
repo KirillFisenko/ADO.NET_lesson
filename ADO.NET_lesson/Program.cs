@@ -5,8 +5,20 @@ public class Program
 {
     public static void Main()
     {
+        Console.WriteLine("Введите имя:");
+        var firstName = Console.ReadLine();
+
+        Console.WriteLine("Введите фамилию:");
+        var lastName = Console.ReadLine();
+
+        Console.WriteLine("Введите email:");
+        var email = Console.ReadLine();
+
+        Console.WriteLine("Введите возраст:");
+        var age = int.Parse(Console.ReadLine());
+
         // Строка подключения к базе данных MySQL
-        string connectionString = "Server=localhost;Database=test;Uid=root;Pwd=;";
+        string connectionString = "Server=localhost;Database=test;Uid=root;Pwd=m48kHz16bit%;";
 
         // Создание подключения с автоматическим закрытием соединения
         using (var connection = new MySqlConnection(connectionString))
@@ -32,13 +44,15 @@ public class Program
 
             Console.WriteLine($"Создана таблица users. Количество измененных записей: {execute}");
 
+            // Добавляем параметры запроса
+            command.Parameters.AddWithValue("@firstName", firstName);
+            command.Parameters.AddWithValue("@lastName", lastName);
+            command.Parameters.AddWithValue("@email", email);
+            command.Parameters.AddWithValue("@age", age);
+
             // Переопределяем SQL-выражение, вставляем данные в таблицу
-            command.CommandText = @"INSERT INTO users (first_name, last_name, email, age) VALUES
-                                    ('John', 'Doe', 'john.doe@example.com', 30),
-                                    ('Jane', 'Smith', 'jane.smith@example.com', 25),
-                                    ('Alice', 'Johnson', 'alice.johnson@example.com', 28),
-                                    ('Bob', 'Brown', 'bob.brown@example.com', 35),
-                                    ('Charlie', 'Davis', 'charlie.davis@example.com', 22);
+            command.CommandText = $@"INSERT INTO users (first_name, last_name, email, age) VALUES
+                                    (@firstName, @lastName, @email, @age);
                                    ";
 
             // Выполнение команды на вставку данных
