@@ -87,59 +87,91 @@ public class Program
     //    var execute = command.ExecuteNonQuery();
     //}
 
-    public static void Main()
+    //public static void Main()
+    //{
+    //    var firstName = "Василий";
+    //    var lastName = "Петров";
+    //    var email = "email@email.com";
+    //    var age = 30;
+    //    var connectionString = "Server=localhost;Database=test;Uid=root;Pwd=;";
+    //    using var connection = new MySqlConnection(connectionString);
+    //    connection.Open();
+
+    //    // Создание команды для вызова хранимой процедуры
+    //    var storedProcedureName = "p_InsertUser";
+    //    using var command = new MySqlCommand(storedProcedureName, connection);
+    //    command.CommandType = CommandType.StoredProcedure;
+
+    //    // Указываем входные параметры
+    //    var firstNameParam = new MySqlParameter("p_firstName", firstName)
+    //    {
+    //        Direction = ParameterDirection.Input
+    //    };
+    //    var lastNameParam = new MySqlParameter("p_lastName", lastName)
+    //    {
+    //        Direction = ParameterDirection.Input
+    //    };
+    //    var emailParam = new MySqlParameter("p_email", email)
+    //    {
+    //        Direction = ParameterDirection.Input
+    //    };
+    //    var ageParam = new MySqlParameter("p_age", age)
+    //    {
+    //        Direction = ParameterDirection.Input
+    //    };
+
+    //    // Создание выходного параметра для идентификатора пользователя
+    //    var userIdParam = new MySqlParameter("p_userId", MySqlDbType.Int32)
+    //    {
+    //        Direction = ParameterDirection.Output
+    //    };
+
+    //    // Добавляем параметры для запроса
+    //    command.Parameters.Add(firstNameParam);
+    //    command.Parameters.Add(lastNameParam);
+    //    command.Parameters.Add(emailParam);
+    //    command.Parameters.Add(ageParam);
+    //    command.Parameters.Add(userIdParam);
+
+    //    // Выполнение команды
+    //    command.ExecuteNonQuery();
+
+    //    // Получение значения выходного параметра
+    //    var userId = userIdParam.Value;
+
+    //    // Вывод идентификатора вставленного пользователя
+    //    Console.WriteLine("Inserted User ID: " + userId);
+    //}
+
+
+    private static void Main()
     {
-        var firstName = "Василий";
-        var lastName = "Петров";
-        var email = "email@email.com";
-        var age = 30;
-        var connectionString = "Server=localhost;Database=test;Uid=root;Pwd=;";
+        var connectionString = "Server=localhost;Database=test;Uid=root;Pwd=m48kHz16bit%;";
         using var connection = new MySqlConnection(connectionString);
         connection.Open();
 
-        // Создание команды для вызова хранимой процедуры
-        var storedProcedureName = "p_InsertUser";
-        using var command = new MySqlCommand(storedProcedureName, connection);
+        // Создание команды для вызова функции
+        var functionName = "ExampleFunction";
+        using var command = new MySqlCommand(functionName, connection);
         command.CommandType = CommandType.StoredProcedure;
 
-        // Указываем входные параметры
-        var firstNameParam = new MySqlParameter("p_firstName", firstName)
+        // Указываем параметр для возвращаемого значения
+        var returnValueParam = new MySqlParameter()
         {
-            Direction = ParameterDirection.Input
-        };
-        var lastNameParam = new MySqlParameter("p_lastName", lastName)
-        {
-            Direction = ParameterDirection.Input
-        };
-        var emailParam = new MySqlParameter("p_email", email)
-        {
-            Direction = ParameterDirection.Input
-        };
-        var ageParam = new MySqlParameter("p_age", age)
-        {
-            Direction = ParameterDirection.Input
+            Direction = ParameterDirection.ReturnValue
         };
 
-        // Создание выходного параметра для идентификатора пользователя
-        var userIdParam = new MySqlParameter("p_userId", MySqlDbType.Int32)
-        {
-            Direction = ParameterDirection.Output
-        };
-
-        // Добавляем параметры для запроса
-        command.Parameters.Add(firstNameParam);
-        command.Parameters.Add(lastNameParam);
-        command.Parameters.Add(emailParam);
-        command.Parameters.Add(ageParam);
-        command.Parameters.Add(userIdParam);
+        // Добавляем параметр к команде
+        command.Parameters.Add(returnValueParam);
 
         // Выполнение команды
         command.ExecuteNonQuery();
 
-        // Получение значения выходного параметра
-        var userId = userIdParam.Value;
+        // Получение значения возвращаемого параметра
+        var returnValue = returnValueParam.Value;
 
-        // Вывод идентификатора вставленного пользователя
-        Console.WriteLine("Inserted User ID: " + userId);
+        // Вывод значения возвращаемого параметра
+        Console.WriteLine("Return Value: " + returnValue);
     }
 }
+
