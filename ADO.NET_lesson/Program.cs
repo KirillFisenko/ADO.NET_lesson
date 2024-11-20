@@ -17,7 +17,7 @@ public class Program
     //    Console.WriteLine(usersOlder30);
 
     //    // Вывод полного имени самого старшего пользователя
-    //    command.CommandText = "SELECT CONCAT(first_name, ' ', last_name) FROM USERS  WHERE age = (SELECT MAX(age) FROM USERS);"; ;
+    //    command.CommandText = "SELECT CONCAT(first_name, ' ', last_name) FROM USERS  WHERE age = (SELECT MAX(age) FROM USERS);";
     //    object oldestUser = command.ExecuteScalar();
     //    Console.WriteLine(oldestUser);
     //}
@@ -47,7 +47,7 @@ public class Program
     //    var lastName = "Петров";
     //    var email = "1email@mail.com";
     //    var age = 30;
-    //    var connectionString = "Server=localhost;Database=test;Uid=root;Pwd=m48kHz16bit%;";
+    //    var connectionString = "Server=localhost;Database=test;Uid=root;Pwd=;";
     //    using var connection = new MySqlConnection(connectionString);
     //    connection.Open();
     //    var sqlQuery = $@"INSERT INTO users (first_name, last_name, email, age) VALUES
@@ -146,7 +146,7 @@ public class Program
 
     private static void Main()
     {
-        var connectionString = "Server=localhost;Database=test;Uid=root;Pwd=m48kHz16bit%;";
+        var connectionString = "Server=localhost;Database=test;Uid=root;Pwd=;";
         using var connection = new MySqlConnection(connectionString);
         connection.Open();
 
