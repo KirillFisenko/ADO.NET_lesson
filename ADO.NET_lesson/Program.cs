@@ -8,7 +8,7 @@ public class Program
         var lastName = "lastName";
         var email = "email";
         var age = 30;
-        string connectionString = "Server=localhost;Database=test;Uid=root;Pwd=m48kHz16bit%;";
+        string connectionString = "Server=localhost;Database=test;Uid=root;Pwd=;";
         using var connection = new MySqlConnection(connectionString);
         connection.Open();
 
@@ -24,15 +24,13 @@ public class Program
                               last_name VARCHAR(50) NOT NULL,
                               email VARCHAR(100) UNIQUE NOT NULL,
                               age INT,
-                              created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-                           );";
+                              created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);";
 
             using MySqlCommand command = new MySqlCommand(sqlQuery, connection, transaction);
             command.ExecuteNonQuery();
 
-            command.CommandText = $@"INSERT INTO users (first_name, last_name, email, age) VALUES
-                                (@firstName, @lastName, @email, @age);
-                               ";
+            command.CommandText = @"INSERT INTO users (first_name, last_name, email, age) VALUES
+                                                      (@firstName, @lastName, @email, @age);";
             command.Parameters.AddWithValue("@firstName", firstName);
             command.Parameters.AddWithValue("@lastName", lastName);
             command.Parameters.AddWithValue("@email", email);
