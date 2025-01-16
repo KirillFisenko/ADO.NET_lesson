@@ -51,9 +51,8 @@ public class Program
                 command.Parameters.AddWithValue("@age", age);
 
                 // Переопределяем SQL-выражение, вставляем данные в таблицу
-                command.CommandText = $@"INSERT INTO users (first_name, last_name, email, age) VALUES
-                                (@firstName, @lastName, @email, @age);
-                               ";
+                command.CommandText = @"INSERT INTO users (first_name, last_name, email, age) VALUES
+                                      (@firstName, @lastName, @email, @age);";
 
                 // Выполнение команды на вставку данных
                 execute = command.ExecuteNonQuery();
@@ -63,56 +62,56 @@ public class Program
         }
     }
 
-    //public static void Main()
-    //{
-    //    // Строка подключения к базе данных MySQL
-    //    string connectionString = "Server=localhost;Database=test;Uid=root;Pwd=;";
+    public static void Main2()
+    {
+        // Строка подключения к базе данных MySQL
+        string connectionString = "Server=localhost;Database=test;Uid=root;Pwd=;";
 
-    //    // Создание подключения с автоматическим закрытием соединения
-    //    using var connection = new MySqlConnection(connectionString);
+        // Создание подключения с автоматическим закрытием соединения
+        using var connection = new MySqlConnection(connectionString);
 
-    //    // Открытие соединения
-    //    connection.Open();
+        // Открытие соединения
+        connection.Open();
 
-    //    // Составление SQL-выражения для чтения данных из таблицы
-    //    string sqlQuery = "SELECT * FROM USERS;";
+        // Составление SQL-выражения для чтения данных из таблицы
+        string sqlQuery = "SELECT * FROM USERS;";
 
-    //    // Создание объекта для инкапсуляции выполняемого SQL-выражения 
-    //    using MySqlCommand command = new MySqlCommand(sqlQuery, connection);
+        // Создание объекта для инкапсуляции выполняемого SQL-выражения 
+        using MySqlCommand command = new MySqlCommand(sqlQuery, connection);
 
-    //    // Создание объекта, который используется для чтения данных
-    //    using MySqlDataReader reader = command.ExecuteReader();
+        // Создание объекта, который используется для чтения данных
+        using MySqlDataReader reader = command.ExecuteReader();
 
-    //    // Проверка, содержит ли набор данных строки
-    //    if (reader.HasRows)
-    //    {
-    //        // Получение имен столбцов и их форматирование для ровного вывода
-    //        var columnName_id = "id".PadRight(10);
-    //        var columnName_firstName = "имя".PadRight(15);
-    //        var columnName_lastName = "фамилия".PadRight(15);
-    //        var columnName_email = "email".PadRight(26);
-    //        var columnName_age = "возраст".PadRight(8);
-    //        var columnName_createdAt = "дата регистрации".PadRight(20);
+        // Проверка, содержит ли набор данных строки
+        if (reader.HasRows)
+        {
+            // Получение имен столбцов и их форматирование для ровного вывода
+            var columnName_id = "id".PadRight(10);
+            var columnName_firstName = "имя".PadRight(15);
+            var columnName_lastName = "фамилия".PadRight(15);
+            var columnName_email = "email".PadRight(26);
+            var columnName_age = "возраст".PadRight(8);
+            var columnName_createdAt = "дата регистрации".PadRight(20);
 
-    //        // Вывод заголовков столбцов
-    //        Console.WriteLine($"{columnName_id} {columnName_firstName} {columnName_lastName} {columnName_email} {columnName_age} {columnName_createdAt}");
+            // Вывод заголовков столбцов
+            Console.WriteLine($"{columnName_id} {columnName_firstName} {columnName_lastName} {columnName_email} {columnName_age} {columnName_createdAt}");
 
-    //        // Чтение строк из набора данных
-    //        while (reader.Read())
-    //        {
-    //            // Получение значений столбцов и их форматирование для ровного вывода
-    //            var value_id = reader["id"].ToString().PadRight(10);
-    //            var value_firstName = reader["first_name"].ToString().PadRight(15);
-    //            var value_lastName = reader["last_name"].ToString().PadRight(15);
-    //            var value_email = reader["email"].ToString().PadRight(26);
-    //            var value_age = reader["age"].ToString().PadRight(8);
-    //            var value_createdAt = reader["created_at"].ToString().PadRight(20);
+            // Чтение строк из набора данных
+            while (reader.Read())
+            {
+                // Получение значений столбцов и их форматирование для ровного вывода
+                var value_id = reader["id"].ToString().PadRight(10);
+                var value_firstName = reader["first_name"].ToString().PadRight(15);
+                var value_lastName = reader["last_name"].ToString().PadRight(15);
+                var value_email = reader["email"].ToString().PadRight(26);
+                var value_age = reader["age"].ToString().PadRight(8);
+                var value_createdAt = reader["created_at"].ToString().PadRight(20);
 
-    //            // Вывод значений столбцов
-    //            Console.WriteLine($"{value_id} {value_firstName} {value_lastName} {value_email} {value_age} {value_createdAt}");
-    //        }
-    //    }
-    //}
+                // Вывод значений столбцов
+                Console.WriteLine($"{value_id} {value_firstName} {value_lastName} {value_email} {value_age} {value_createdAt}");
+            }
+        }
+    }
 
     /// Метод для вывода всех свойств объекта
     private static void PrintProperties(object obj)
