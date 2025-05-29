@@ -4,7 +4,7 @@ public class Program
 {
     public static void Main()
     {
-        var connectionString = "Server=localhost;Database=test;Uid=root;Pwd=m48kHz16bit%";
+        var connectionString = "Server=localhost;Database=test;Uid=root;Pwd=";
         using var connection = new MySqlConnection(connectionString);
         connection.Open();
         var showIndexQuery = "SHOW INDEX FROM users;";
